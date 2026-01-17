@@ -1,41 +1,80 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Инженерный калькулятор</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Масса круглого проката</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
-    }
-    h1 { margin-bottom: 10px; }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    .box {
-      border: 1px solid #ddd;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-    }
-  </style>
+<style>
+body{
+  font-family: Arial, sans-serif;
+  padding:20px;
+  max-width:600px;
+  margin:auto;
+}
+h1{text-align:center;}
+.card{
+  border:1px solid #ddd;
+  padding:20px;
+  border-radius:12px;
+}
+label{display:block;margin-top:12px;}
+input{
+  width:100%;
+  padding:10px;
+  font-size:16px;
+  margin-top:4px;
+}
+button{
+  width:100%;
+  padding:12px;
+  font-size:18px;
+  margin-top:15px;
+}
+.result{
+  margin-top:15px;
+  font-size:20px;
+  font-weight:bold;
+  text-align:center;
+}
+</style>
 </head>
 
 <body>
 
-<h1>Инженерный калькулятор</h1>
+<h1>Масса круглого проката</h1>
 
-<div class="box">
-  <input placeholder="Проверка запуска">
-  <button onclick="alert('Работает!')">Нажми</button>
+<div class="card">
+
+<label>Диаметр, мм</label>
+<input id="d" type="number" step="any">
+
+<label>Длина, м</label>
+<input id="l" type="number" step="any">
+
+<button onclick="calc()">Рассчитать</button>
+
+<div class="result" id="res"></div>
+
 </div>
+
+<script>
+function calc(){
+  const d = parseFloat(document.getElementById("d").value) / 1000;
+  const l = parseFloat(document.getElementById("l").value);
+
+  if(isNaN(d) || isNaN(l)){
+    document.getElementById("res").innerText = "Введите данные";
+    return;
+  }
+
+  const rho = 7850;
+  const mass = rho * Math.PI * (d*d/4) * l;
+
+  document.getElementById("res").innerText =
+    "Масса: " + mass.toFixed(2) + " кг";
+}
+</script>
 
 </body>
 </html>
