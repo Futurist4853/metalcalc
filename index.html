@@ -1,194 +1,314 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Калькулятор массы металлопроката онлайн</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор массы металлопроката — круг, труба, лист, прямоугольник</title>
+<meta name="description" content="Онлайн калькулятор массы металлопроката: круг, труба, лист, прямоугольник. Расчёт веса по размерам и плотности. Бесплатно, работает офлайн." />
 
-<meta name="description" content="Онлайн калькулятор массы металлопроката. Расчет круга, трубы, листа и прямоугольного проката по размерам и плотности металла.">
-<meta name="keywords" content="калькулятор металла, масса металлопроката, расчет веса металла, круг труба лист">
-
-<link rel="icon" href="../favicon.png">
-
-<!-- ===== YANDEX ADS LOADER (ОБЯЗАТЕЛЬНО В HEAD) ===== -->
-<script>
-  window.yaContextCb = window.yaContextCb || [];
-</script>
-<script src="https://yandex.ru/ads/system/context.js" async></script>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="favicon.png" type="image/png" />
+<meta name="theme-color" content="#ffffff" />
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #ffffff;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 30px;
-    border-radius: 16px;
-    border: 1px solid #e0e0e0;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 5px;
-}
-
-.subtitle {
-    text-align: center;
-    color: #666;
-    margin-bottom: 30px;
-}
-
-.tabs button {
-    margin-right: 6px;
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    background: #fff;
-    cursor: pointer;
-}
-
-.tabs button.active {
-    background: #000;
-    color: #fff;
-}
-
-.form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.form label {
-    font-size: 14px;
-}
-
-.form input,
-.form select {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    width: 100%;
-}
-
-.buttons {
-    margin-top: 20px;
-}
-
-.buttons button {
-    padding: 10px 20px;
-    border-radius: 10px;
-    border: 1px solid #000;
-    cursor: pointer;
-    background: #fff;
-}
-
-.buttons .calc {
-    background: #000;
-    color: #fff;
-}
-
-.section {
-    margin-top: 40px;
-    line-height: 1.6;
-}
+:root{--b:#e6e6e6;--t:#111;--m:#666;--r:14px;--p:16px}
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;color:var(--t);background:#fff}
+.wrap{max-width:920px;margin:0 auto;padding:18px}
+h1{text-align:center;font-size:22px;margin:10px 0 6px}
+.sub{text-align:center;color:var(--m);font-size:14px;margin:0 0 14px}
+.card{border:1px solid var(--b);border-radius:var(--r);padding:var(--p)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tab{border:1px solid var(--b);background:#fff;padding:7px 12px;border-radius:999px;cursor:pointer;font-size:14px}
+.tab.active{border-color:#111;font-weight:700}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}}
+label{display:block;font-size:13px;margin:10px 0 6px}
+input,select{width:100%;padding:10px 12px;font-size:15px;border:1px solid var(--b);border-radius:12px;outline:none}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+button{border:1px solid var(--b);background:#fff;padding:10px 14px;border-radius:12px;font-size:15px;cursor:pointer}
+button.primary{border-color:#111;font-weight:700}
+.err{color:#b00020;text-align:center;margin-top:10px}
+.out{margin-top:14px;border-top:1px dashed var(--b);padding-top:12px}
+.kpi{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:720px){.kpi{grid-template-columns:1fr}}
+.k{border:1px solid var(--b);border-radius:12px;padding:10px}
+.k .t{font-size:12px;color:var(--m)}
+.k .v{font-size:18px;font-weight:800;margin-top:4px}
+.hint{font-size:13px;color:var(--m);margin-top:10px}
+.seo{margin-top:26px;border:1px solid var(--b);border-radius:var(--r);padding:var(--p);line-height:1.65;color:#222;font-size:15px}
+.seo h2{margin:4px 0 10px;font-size:18px}
+.seo h3{margin:18px 0 8px;font-size:16px}
+.seo ul{margin:8px 0 0 18px}
+footer{text-align:center;color:var(--m);font-size:12px;margin:14px 0 4px}
 </style>
 </head>
 
 <body>
+<div class="wrap">
+  <h1>Калькулятор массы металлопроката</h1>
+  <p class="sub">Круг · Труба · Лист · Прямоугольник</p>
 
-<div class="container">
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" data-mode="round" type="button">Круг</button>
+      <button class="tab" data-mode="pipe" type="button">Труба</button>
+      <button class="tab" data-mode="sheet" type="button">Лист</button>
+      <button class="tab" data-mode="rect" type="button">Прямоугольник</button>
+    </div>
 
-<h1>Калькулятор массы металлопроката</h1>
-<div class="subtitle">Онлайн · офлайн · бесплатно · без регистрации</div>
-
-<div class="tabs">
-    <button class="active">Круг</button>
-    <button>Труба</button>
-    <button>Лист</button>
-    <button>Прямоугольник</button>
-</div>
-
-<br>
-
-<div class="form">
-    <div>
+    <div class="grid2">
+      <div>
         <label>Материал</label>
-        <select>
-            <option>Сталь (7850)</option>
-            <option>Нержавейка (7900)</option>
-            <option>Алюминий (2700)</option>
-            <option>Медь (8900)</option>
+        <select id="mat">
+          <option value="7850">Сталь (7850)</option>
+          <option value="7900">Нержавейка (7900)</option>
+          <option value="2700">Алюминий (2700)</option>
+          <option value="8960">Медь (8960)</option>
+          <option value="8500">Латунь (8500)</option>
+          <option value="4500">Титан (4500)</option>
+          <option value="custom">Своя плотность</option>
         </select>
-    </div>
-
-    <div>
+      </div>
+      <div>
         <label>Плотность, кг/м³</label>
-        <input value="7850">
+        <input id="rho" type="number" inputmode="decimal" value="7850" />
+      </div>
     </div>
 
-    <div>
-        <label>Диаметр, мм</label>
-        <input placeholder="например 20">
+    <div id="inputs"></div>
+
+    <div class="actions">
+      <button class="primary" id="btnCalc" type="button">Рассчитать</button>
+      <button id="btnReset" type="button">Сброс</button>
     </div>
 
-    <div>
-        <label>Длина, м</label>
-        <input placeholder="например 6">
+    <div id="error" class="err"></div>
+
+    <div id="out" class="out" style="display:none">
+      <div class="kpi">
+        <div class="k"><div class="t">Масса</div><div class="v" id="m"></div></div>
+        <div class="k"><div class="t">Масса 1 м</div><div class="v" id="m1"></div></div>
+        <div class="k"><div class="t">Объём</div><div class="v" id="v"></div></div>
+      </div>
+      <div class="hint" id="f"></div>
     </div>
+  </div>
+
+  <div class="seo">
+    <h2>Онлайн калькулятор массы металла</h2>
+    <p>Калькулятор помогает быстро рассчитать массу металлопроката по размерам и плотности материала.</p>
+    <h3>Формулы</h3>
+    <ul>
+      <li>Круг: m = ρ · π · (D²/4) · L</li>
+      <li>Труба: m = ρ · π · (Dн² − Dв²)/4 · L</li>
+      <li>Лист: m = ρ · t · B · L · N</li>
+      <li>Прямоугольник: m = ρ · a · b · L · N</li>
+    </ul>
+  </div>
+
+  <footer>© metalcalc</footer>
 </div>
 
-<div class="buttons">
-    <button class="calc">Рассчитать</button>
-    <button>Сброс</button>
-</div>
-
-<!-- ===== РЕКЛАМНЫЙ БЛОК ===== -->
-<br><br>
-
-<div id="yandex_rtb_R-A-18463724-1"></div>
 <script>
-window.yaContextCb.push(() => {
-    Ya.Context.AdvManager.render({
-        blockId: "R-A-18463724-1",
-        renderTo: "yandex_rtb_R-A-18463724-1"
-    });
+const $ = (id) => document.getElementById(id);
+
+let mode = "round";
+
+const modes = {
+  round: {
+    render: () => `
+      <div class="grid2">
+        <div>
+          <label>Диаметр, мм</label>
+          <input id="D" type="number" inputmode="decimal" placeholder="например 20" />
+        </div>
+        <div>
+          <label>Длина, м</label>
+          <input id="L" type="number" inputmode="decimal" placeholder="например 6" />
+        </div>
+      </div>
+    `,
+    calc: (rho) => {
+      const D = parseFloat($("D").value) / 1000;
+      const L = parseFloat($("L").value);
+      if (!(D > 0 && L > 0)) throw new Error("Введите диаметр и длину.");
+      const A = Math.PI * D * D / 4;
+      const V = A * L;
+      return { m: rho * V, v: V, m1: rho * A, f: "m = ρ·π·(D²/4)·L" };
+    }
+  },
+  pipe: {
+    render: () => `
+      <div class="grid2">
+        <div>
+          <label>Dн, мм</label>
+          <input id="Dn" type="number" inputmode="decimal" placeholder="наружный" />
+        </div>
+        <div>
+          <label>Dв, мм</label>
+          <input id="Dv" type="number" inputmode="decimal" placeholder="внутренний" />
+        </div>
+      </div>
+      <div class="grid2">
+        <div>
+          <label>Длина, м</label>
+          <input id="L" type="number" inputmode="decimal" placeholder="например 6" />
+        </div>
+        <div></div>
+      </div>
+    `,
+    calc: (rho) => {
+      const Dn = parseFloat($("Dn").value) / 1000;
+      const Dv = parseFloat($("Dv").value) / 1000;
+      const L  = parseFloat($("L").value);
+      if (!(Dn > 0 && Dv > 0 && L > 0)) throw new Error("Введите Dн, Dв и длину.");
+      if (Dv >= Dn) throw new Error("Dв должен быть меньше Dн.");
+      const A = Math.PI * (Dn*Dn - Dv*Dv) / 4;
+      const V = A * L;
+      return { m: rho * V, v: V, m1: rho * A, f: "m = ρ·π·(Dн²−Dв²)/4·L" };
+    }
+  },
+  sheet: {
+    render: () => `
+      <div class="grid2">
+        <div>
+          <label>Толщина, мм</label>
+          <input id="t" type="number" inputmode="decimal" placeholder="например 2" />
+        </div>
+        <div>
+          <label>Ширина, мм</label>
+          <input id="B" type="number" inputmode="decimal" placeholder="например 1000" />
+        </div>
+      </div>
+      <div class="grid2">
+        <div>
+          <label>Длина, мм</label>
+          <input id="Lmm" type="number" inputmode="decimal" placeholder="например 2000" />
+        </div>
+        <div>
+          <label>Количество</label>
+          <input id="N" type="number" inputmode="numeric" value="1" />
+        </div>
+      </div>
+    `,
+    calc: (rho) => {
+      const t = parseFloat($("t").value) / 1000;
+      const B = parseFloat($("B").value) / 1000;
+      const L = parseFloat($("Lmm").value) / 1000;
+      const N = parseFloat($("N").value);
+      if (!(t > 0 && B > 0 && L > 0 && N > 0)) throw new Error("Введите толщину, размеры и количество.");
+      const V = t * B * L * N;
+      return { m: rho * V, v: V, m1: null, f: "m = ρ·t·B·L·N" };
+    }
+  },
+  rect: {
+    render: () => `
+      <div class="grid2">
+        <div>
+          <label>a, мм</label>
+          <input id="a" type="number" inputmode="decimal" placeholder="например 20" />
+        </div>
+        <div>
+          <label>b, мм</label>
+          <input id="b" type="number" inputmode="decimal" placeholder="например 40" />
+        </div>
+      </div>
+      <div class="grid2">
+        <div>
+          <label>Длина, м</label>
+          <input id="L" type="number" inputmode="decimal" placeholder="например 6" />
+        </div>
+        <div>
+          <label>Количество</label>
+          <input id="N" type="number" inputmode="numeric" value="1" />
+        </div>
+      </div>
+    `,
+    calc: (rho) => {
+      const a = parseFloat($("a").value) / 1000;
+      const b = parseFloat($("b").value) / 1000;
+      const L = parseFloat($("L").value);
+      const N = parseFloat($("N").value);
+      if (!(a > 0 && b > 0 && L > 0 && N > 0)) throw new Error("Введите размеры, длину и количество.");
+      const A = a * b;
+      const V = A * L * N;
+      return { m: rho * V, v: V, m1: rho * A, f: "m = ρ·a·b·L·N" };
+    }
+  }
+};
+
+function renderMode(){
+  document.querySelectorAll(".tab").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.mode === mode);
+  });
+  $("inputs").innerHTML = modes[mode].render();
+  $("out").style.display = "none";
+  $("error").innerText = "";
+}
+
+function setDensityByMaterial(){
+  const v = $("mat").value;
+  if (v === "custom") {
+    $("rho").disabled = false;
+  } else {
+    $("rho").value = v;
+    $("rho").disabled = true;
+  }
+}
+
+function calc(){
+  try{
+    const rho = parseFloat($("rho").value);
+    if (!(rho > 0)) throw new Error("Плотность должна быть больше 0.");
+    const r = modes[mode].calc(rho);
+
+    $("m").innerText  = `${r.m.toFixed(2)} кг (${(r.m/1000).toFixed(3)} т)`;
+    $("m1").innerText = (r.m1 == null) ? "—" : `${r.m1.toFixed(3)} кг/м`;
+    $("v").innerText  = `${r.v.toFixed(6)} м³`;
+    $("f").innerText  = `Формула: ${r.f}`;
+
+    $("out").style.display = "block";
+    $("error").innerText = "";
+  }catch(e){
+    $("out").style.display = "none";
+    $("error").innerText = e.message || String(e);
+  }
+}
+
+function resetAll(){
+  $("mat").value = "7850";
+  $("rho").value = "7850";
+  $("rho").disabled = true;
+  mode = "round";
+  setDensityByMaterial();
+  renderMode();
+}
+
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    mode = btn.dataset.mode;
+    renderMode();
+  });
 });
+
+$("mat").addEventListener("change", setDensityByMaterial);
+$("btnCalc").addEventListener("click", calc);
+$("btnReset").addEventListener("click", resetAll);
+
+setDensityByMaterial();
+renderMode();
 </script>
 
-<!-- ===== SEO ===== -->
-
-<div class="section">
-<h2>Калькулятор массы металлопроката онлайн</h2>
-
-<p>
-Онлайн калькулятор позволяет быстро рассчитать массу металлопроката по геометрическим размерам и плотности материала.
-Подходит для инженерных расчетов, снабжения, производства и учебных задач.
-</p>
-
-<h3>Что можно рассчитать</h3>
-<ul>
-<li>массу круглого проката (прутка)</li>
-<li>массу трубы по наружному и внутреннему диаметрам</li>
-<li>массу листового металла</li>
-<li>массу прямоугольного и квадратного проката</li>
-</ul>
-
-<h3>Формулы</h3>
-<ul>
-<li>Круг: m = ρ × π × D² / 4 × L</li>
-<li>Труба: m = ρ × π × (D² − d²) / 4 × L</li>
-<li>Лист: m = ρ × t × B × L × N</li>
-<li>Прямоугольник: m = ρ × a × b × L × N</li>
-</ul>
-</div>
-
-</div>
+<script>
+// service worker (оставим, но он будет безопасный — см. sw.js)
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  });
+}
+</script>
 
 </body>
 </html>
