@@ -10,28 +10,79 @@
 
 <style>
 :root{--b:#e6e6e6;--r:14px}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:18px;max-width:860px;margin-inline:auto}
-h1{text-align:center;font-size:22px;margin:8px 0}
-.muted{text-align:center;color:#666;font-size:14px;margin-bottom:12px}
-.card{border:1px solid var(--b);border-radius:var(--r);padding:14px}
-.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-.tab{border:1px solid var(--b);border-radius:999px;padding:8px 12px;background:#fff;cursor:pointer}
+*{box-sizing:border-box}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  margin:0;
+  padding:18px;
+  max-width:920px;
+  margin-inline:auto;
+}
+h1{margin:8px 0 4px; text-align:center; font-size:22px}
+.muted{margin:0 0 12px; text-align:center; color:#666; font-size:14px}
+
+.card{
+  border:1px solid var(--b);
+  border-radius:var(--r);
+  padding:16px;
+  max-width:860px;
+  margin-inline:auto;
+}
+
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.tab{
+  border:1px solid var(--b);
+  border-radius:999px;
+  padding:7px 12px;       /* чуть компактнее */
+  background:#fff;
+  cursor:pointer;
+  font-size:14px;
+}
 .tab.active{border-color:#111;font-weight:600}
-label{display:block;font-size:14px;margin:10px 0 6px}
-input,select{width:100%;padding:10px;border:1px solid var(--b);border-radius:12px;font-size:16px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:700px){.row{grid-template-columns:1fr}}
-.actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-button{padding:11px 14px;border-radius:12px;border:1px solid var(--b);background:#fff;font-size:16px;cursor:pointer}
+
+label{display:block;font-size:13px;margin:10px 0 6px;color:#222}
+
+input,select{
+  width:100%;
+  padding:9px 10px;       /* меньше, чтобы не были “жирные” */
+  border:1px solid var(--b);
+  border-radius:12px;
+  font-size:15px;
+  line-height:1.2;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr); /* ключевой фикс от “налезаний” */
+  gap:12px;
+  align-items:start;
+}
+@media(max-width:720px){.row{grid-template-columns:1fr}}
+
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+button{
+  padding:10px 14px;
+  border-radius:12px;
+  border:1px solid var(--b);
+  background:#fff;
+  font-size:15px;
+  cursor:pointer;
+}
 button.primary{border-color:#111;font-weight:600}
+
 .out{margin-top:14px;border-top:1px dashed var(--b);padding-top:12px}
-.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media(max-width:700px){.kpi{grid-template-columns:1fr}}
+.kpi{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:720px){.kpi{grid-template-columns:1fr}}
 .k{border:1px solid var(--b);border-radius:12px;padding:10px}
-.k .t{font-size:13px;color:#666}
-.k .v{font-size:20px;font-weight:700;margin-top:4px}
+.k .t{font-size:12px;color:#666}
+.k .v{font-size:18px;font-weight:700;margin-top:4px}
+
 .hint{font-size:13px;color:#666;margin-top:10px}
-.small{text-align:center;font-size:12px;color:#666;margin-top:10px}
 .err{text-align:center;color:#b00020;margin-top:10px}
 </style>
 </head>
@@ -43,49 +94,49 @@ button.primary{border-color:#111;font-weight:600}
 
 <div class="card">
 
-<div class="tabs">
-  <button class="tab active" data-mode="round">Круг</button>
-  <button class="tab" data-mode="pipe">Труба</button>
-  <button class="tab" data-mode="sheet">Лист</button>
-  <button class="tab" data-mode="rect">Прямоугольник</button>
-</div>
-
-<div class="row">
-  <div>
-    <label>Материал</label>
-    <select id="mat">
-      <option value="7850">Сталь (7850)</option>
-      <option value="7900">Нержавейка (7900)</option>
-      <option value="2700">Алюминий (2700)</option>
-      <option value="8960">Медь (8960)</option>
-      <option value="8500">Латунь (8500)</option>
-      <option value="4500">Титан (4500)</option>
-      <option value="custom">Своя плотность</option>
-    </select>
+  <div class="tabs">
+    <button class="tab active" data-mode="round">Круг</button>
+    <button class="tab" data-mode="pipe">Труба</button>
+    <button class="tab" data-mode="sheet">Лист</button>
+    <button class="tab" data-mode="rect">Прямоугольник</button>
   </div>
-  <div>
-    <label>Плотность кг/м³</label>
-    <input id="rho" type="number" value="7850">
+
+  <div class="row">
+    <div>
+      <label>Материал</label>
+      <select id="mat">
+        <option value="7850">Сталь (7850)</option>
+        <option value="7900">Нержавейка (7900)</option>
+        <option value="2700">Алюминий (2700)</option>
+        <option value="8960">Медь (8960)</option>
+        <option value="8500">Латунь (8500)</option>
+        <option value="4500">Титан (4500)</option>
+        <option value="custom">Своя плотность</option>
+      </select>
+    </div>
+    <div>
+      <label>Плотность, кг/м³</label>
+      <input id="rho" type="number" value="7850">
+    </div>
   </div>
-</div>
 
-<div id="inputs"></div>
+  <div id="inputs"></div>
 
-<div class="actions">
-  <button class="primary" onclick="calc()">Рассчитать</button>
-  <button onclick="resetAll()">Сброс</button>
-</div>
-
-<div id="error" class="err"></div>
-
-<div class="out" id="out" style="display:none">
-  <div class="kpi">
-    <div class="k"><div class="t">Масса</div><div class="v" id="m"></div></div>
-    <div class="k"><div class="t">Масса 1 м</div><div class="v" id="m1"></div></div>
-    <div class="k"><div class="t">Объём</div><div class="v" id="v"></div></div>
+  <div class="actions">
+    <button class="primary" onclick="calc()">Рассчитать</button>
+    <button onclick="resetAll()">Сброс</button>
   </div>
-  <div class="hint" id="f"></div>
-</div>
+
+  <div id="error" class="err"></div>
+
+  <div class="out" id="out" style="display:none">
+    <div class="kpi">
+      <div class="k"><div class="t">Масса</div><div class="v" id="m"></div></div>
+      <div class="k"><div class="t">Масса 1 м</div><div class="v" id="m1"></div></div>
+      <div class="k"><div class="t">Объём</div><div class="v" id="v"></div></div>
+    </div>
+    <div class="hint" id="f"></div>
+  </div>
 
 </div>
 
@@ -96,54 +147,59 @@ let mode="round";
 const modes={
 round:{r:()=>`
 <div class="row">
- <div><label>Диаметр мм</label><input id="D"></div>
- <div><label>Длина м</label><input id="L"></div>
+ <div><label>Диаметр, мм</label><input id="D" inputmode="decimal" placeholder="например 20"></div>
+ <div><label>Длина, м</label><input id="L" inputmode="decimal" placeholder="например 6"></div>
 </div>`,
 c:(ρ)=>{
- const D=$("D").value/1000,L=$("L").value;
- const A=Math.PI*D*D/4,V=A*L;
+ const D=+$("D").value/1000, L=+$("L").value;
+ if(!(D>0&&L>0)) throw "Заполни D и L (должны быть > 0)";
+ const A=Math.PI*D*D/4, V=A*L;
  return{m:ρ*V,v:V,m1:ρ*A,f:"m = ρ · π · (D²/4) · L"};
 }},
 pipe:{r:()=>`
 <div class="row">
- <div><label>Dн мм</label><input id="Dn"></div>
- <div><label>Dв мм</label><input id="Dv"></div>
+ <div><label>Dн, мм</label><input id="Dn" inputmode="decimal" placeholder="например 50"></div>
+ <div><label>Dв, мм</label><input id="Dv" inputmode="decimal" placeholder="например 40"></div>
 </div>
 <div class="row">
- <div><label>Длина м</label><input id="L"></div>
+ <div><label>Длина, м</label><input id="L" inputmode="decimal" placeholder="например 6"></div>
+ <div><label>&nbsp;</label><input disabled value="В v2 добавим ввод по толщине стенки"></div>
 </div>`,
 c:(ρ)=>{
- const Dn=$("Dn").value/1000,Dv=$("Dv").value/1000,L=$("L").value;
- if(Dv>=Dn)throw"Внутр. диаметр больше наружного";
- const A=Math.PI*(Dn*Dn-Dv*Dv)/4,V=A*L;
+ const Dn=+$("Dn").value/1000, Dv=+$("Dv").value/1000, L=+$("L").value;
+ if(!(Dn>0&&Dv>0&&L>0)) throw "Заполни Dн, Dв и L (должны быть > 0)";
+ if(Dv>=Dn) throw "Dв должен быть меньше Dн";
+ const A=Math.PI*(Dn*Dn-Dv*Dv)/4, V=A*L;
  return{m:ρ*V,v:V,m1:ρ*A,f:"m = ρ · π · (Dн² − Dв²)/4 · L"};
 }},
 sheet:{r:()=>`
 <div class="row">
- <div><label>Толщина мм</label><input id="t"></div>
- <div><label>Ширина мм</label><input id="B"></div>
+ <div><label>Толщина, мм</label><input id="t" inputmode="decimal" placeholder="например 2"></div>
+ <div><label>Ширина, мм</label><input id="B" inputmode="decimal" placeholder="например 1000"></div>
 </div>
 <div class="row">
- <div><label>Длина мм</label><input id="Lmm"></div>
- <div><label>Кол-во</label><input id="N" value="1"></div>
+ <div><label>Длина, мм</label><input id="Lmm" inputmode="decimal" placeholder="например 2000"></div>
+ <div><label>Количество, шт</label><input id="N" inputmode="numeric" value="1"></div>
 </div>`,
 c:(ρ)=>{
- const t=$("t").value/1000,B=$("B").value/1000,L=$("Lmm").value/1000,N=$("N").value;
+ const t=+$("t").value/1000, B=+$("B").value/1000, L=+$("Lmm").value/1000, N=+$("N").value;
+ if(!(t>0&&B>0&&L>0&&N>0)) throw "Заполни t, B, L и N (все > 0)";
  const V=t*B*L*N;
  return{m:ρ*V,v:V,m1:null,f:"m = ρ · t · B · L · N"};
 }},
 rect:{r:()=>`
 <div class="row">
- <div><label>a мм</label><input id="a"></div>
- <div><label>b мм</label><input id="b"></div>
+ <div><label>a, мм</label><input id="a" inputmode="decimal" placeholder="например 10"></div>
+ <div><label>b, мм</label><input id="b" inputmode="decimal" placeholder="например 30"></div>
 </div>
 <div class="row">
- <div><label>Длина м</label><input id="L"></div>
- <div><label>Кол-во</label><input id="N" value="1"></div>
+ <div><label>Длина, м</label><input id="L" inputmode="decimal" placeholder="например 6"></div>
+ <div><label>Количество, шт</label><input id="N" inputmode="numeric" value="1"></div>
 </div>`,
 c:(ρ)=>{
- const a=$("a").value/1000,b=$("b").value/1000,L=$("L").value,N=$("N").value;
- const A=a*b,V=A*L*N;
+ const a=+$("a").value/1000, b=+$("b").value/1000, L=+$("L").value, N=+$("N").value;
+ if(!(a>0&&b>0&&L>0&&N>0)) throw "Заполни a, b, L и N (все > 0)";
+ const A=a*b, V=A*L*N;
  return{m:ρ*V,v:V,m1:ρ*A,f:"m = ρ · a · b · L · N"};
 }}
 };
@@ -151,39 +207,44 @@ c:(ρ)=>{
 function render(){
  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.mode===mode));
  $("inputs").innerHTML=modes[mode].r();
+ $("out").style.display="none";
+ $("error").innerText="";
 }
 
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{mode=t.dataset.mode;render();});
 
 $("mat").onchange=()=>{
- if($("mat").value==="custom")$("rho").disabled=false;
- else{$("rho").value=$("mat").value;$("rho").disabled=true;}
+ if($("mat").value==="custom"){ $("rho").disabled=false; }
+ else { $("rho").value=$("mat").value; $("rho").disabled=true; }
 };
 
 function calc(){
  try{
   const ρ=parseFloat($("rho").value);
+  if(!(ρ>0)) throw "Плотность должна быть > 0";
   const r=modes[mode].c(ρ);
-  $("m").innerText=r.m.toFixed(2)+" кг";
-  $("m1").innerText=r.m1? r.m1.toFixed(3)+" кг/м":"—";
-  $("v").innerText=r.v.toFixed(6)+" м³";
-  $("f").innerText="Формула: "+r.f;
+  $("m").innerText = r.m.toFixed(2) + " кг (" + (r.m/1000).toFixed(3) + " т)";
+  $("m1").innerText = (r.m1==null) ? "—" : (r.m1.toFixed(3) + " кг/м");
+  $("v").innerText = r.v.toFixed(6) + " м³";
+  $("f").innerText = "Формула: " + r.f;
   $("out").style.display="block";
   $("error").innerText="";
  }catch(e){
-  $("error").innerText=e;
+  $("error").innerText = String(e);
   $("out").style.display="none";
  }
 }
 
 function resetAll(){
- $("inputs").innerHTML="";
+ $("mat").value="7850";
+ $("rho").value="7850";
+ $("rho").disabled=true;
+ mode="round";
  render();
- $("out").style.display="none";
 }
 
 if("serviceWorker"in navigator){
- window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js"));
+ window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));
 }
 
 render();
