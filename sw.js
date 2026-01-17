@@ -1,71 +1,69 @@
-// sw.js (v3) — исправление проблем с кешем, чтобы всем приходила свежая версия
-const CACHE_NAME = "metalcalc-v3";
-const CORE = [
+/* metalcalc service worker
+   безопасная версия без агрессивного кеширования */
+
+const CACHE_NAME = "metalcalc-v1";
+
+// кешируем ТОЛЬКО статику
+const STATIC_ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png",
-  "./favicon.png",
+  "./favicon.png"
 ];
 
-// Установка: кладём "ядро" в кеш
+// установка
 self.addEventListener("install", (event) => {
   self.skipWaiting();
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE)));
-});
-
-// Активация: чистим старые кеши
-self.addEventListener("activate", (event) => {
   event.waitUntil(
-    (async () => {
-      const keys = await caches.keys();
-      await Promise.all(
-        keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : Promise.resolve()))
-      );
-      await self.clients.claim();
-    })()
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(STATIC_ASSETS);
+    })
   );
 });
 
-// Стратегия:
-// - HTML всегда из сети (чтобы обновления прилетали сразу)
-// - остальное: cache-first
+// активация — чистим старые версии
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      )
+    )
+  );
+  self.clients.claim();
+});
+
+// fetch — максимально безопасно
 self.addEventListener("fetch", (event) => {
   const req = event.request;
-  const url = new URL(req.url);
 
-  // только для своего домена/пути
-  if (url.origin !== self.location.origin) return;
+  // только GET
+  if (req.method !== "GET") return;
 
-  // HTML/навигацию — network-first
-  if (req.mode === "navigate" || url.pathname.endsWith(".html") || url.pathname.endsWith("/")) {
+  // навигация — всегда из сети
+  if (req.mode === "navigate") {
     event.respondWith(
-      (async () => {
-        try {
-          const fresh = await fetch(req);
-          const cache = await caches.open(CACHE_NAME);
-          cache.put(req, fresh.clone());
-          return fresh;
-        } catch (e) {
-          const cached = await caches.match(req);
-          return cached || caches.match("./index.html");
-        }
-      })()
+      fetch(req).catch(() => caches.match("./index.html"))
     );
     return;
   }
 
-  // Остальные файлы — cache-first
+  // остальное — cache first
   event.respondWith(
-    (async () => {
-      const cached = await caches.match(req);
+    caches.match(req).then((cached) => {
       if (cached) return cached;
 
-      const fresh = await fetch(req);
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(req, fresh.clone());
-      return fresh;
-    })()
+      return fetch(req).then((response) => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+        return response;
+      });
+    })
   );
 });
