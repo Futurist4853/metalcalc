@@ -1,0 +1,11 @@
+{
+  "name": "Калькулятор массы металлопроката",
+  "short_name": "МеталлКальк",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "description": "Калькулятор массы: круг, труба, лист, прямоугольник. Работает офлайн.",
+  "icons": []
+}
