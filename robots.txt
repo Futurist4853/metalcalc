@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://futurist4853.github.io/metalcalc/sitemap.xml
